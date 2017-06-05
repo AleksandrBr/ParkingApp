@@ -30,11 +30,10 @@ public class SearchPlace implements Command {
 		}
 		resp = new Response();
 		weelType = req.getWeelsType();
-		id = req.getId();
 		startTime = req.getStartTime();
 		duration = req.getDoubleDuration();
 		try {
-			parkingPlace = ServiceFactory.getInstance().getUserService().searchPlaceNow(weelType, id, startTime, duration);			
+			parkingPlace = ServiceFactory.getInstance().getUserService().searchPlaceNow(weelType, startTime, duration);			
 		} catch (ServiceException e) {
 
 			throw new CommandException(e.getMessage());

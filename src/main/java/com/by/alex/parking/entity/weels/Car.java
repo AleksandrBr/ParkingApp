@@ -6,8 +6,8 @@ public class Car extends AbstractWeels {
 	private String brand;
 	private String[] random = { "BMW", "HONDA", "TOYOTA", "VOLGA", "PORSCHE" };
 
-	public Car(int id, double startTime, double duration) {
-		super(id, startTime, duration);
+	public Car(double startTime, double duration) {
+		super(startTime, duration);
 		this.brand = random[(int) (Math.random() * random.length)];
 	}
 

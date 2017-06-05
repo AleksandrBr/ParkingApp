@@ -5,9 +5,7 @@ import com.by.alex.parking.entity.AbstractWeels;
 public class ParkingPlace {
 	
 	private AbstractWeels weelType;
-	private String placeId;
-	
-	
+	private String placeId;	
 
 	public ParkingPlace(AbstractWeels weelType, String placeId) {
 		super();

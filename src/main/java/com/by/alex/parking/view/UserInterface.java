@@ -51,7 +51,6 @@ public class UserInterface {
 					default: System.out.println("Hi take your choise: \n1. Search for place\n0. Exit");
 					break;
 				}
-				req.setId((int)Math.random()*1000);
 				req.setStartTime(1600);
 				req.setDoubleDuration(100);
 				try {

@@ -21,12 +21,12 @@ public class UserServiceImpl implements UserService {
 	private int maxPlace = 10;
 
 	@Override
-	public ParkingPlace searchPlaceNow(String weelTypeName, int id, double startTime, double duration)
+	public ParkingPlace searchPlaceNow(String weelTypeName, double startTime, double duration)
 			throws ServiceException {
 		takeParkingPlaceID();
 		if (parkingPlaceID == maxPlace) {
 			if (motoList.size() % 2 == 1) {
-				weelType = weelsFactory.getWeels(weelTypeName, id, startTime, duration);
+				weelType = weelsFactory.getWeels(weelTypeName, startTime, duration);
 				if (weelType instanceof Motocycle) {
 					parkingPlace = new ParkingPlace(weelType, (parkingPlaceID + "-B"));
 					PlaceHolder.getInstance().takeMotoPlace(parkingPlace);
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 				throw new ServiceException("Sorry but our parking is full at this moment\n");
 			}
 		} else {
-			weelType = weelsFactory.getWeels(weelTypeName, id, startTime, duration);
+			weelType = weelsFactory.getWeels(weelTypeName, startTime, duration);
 			if (weelType instanceof Car) {
 				parkingPlace = new ParkingPlace(weelType, (parkingPlaceID + "-C"));
 				PlaceHolder.getInstance().takeCarPlace(parkingPlace);
