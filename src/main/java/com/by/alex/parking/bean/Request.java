@@ -3,8 +3,8 @@ package com.by.alex.parking.bean;
 public class Request {
 
 	private int id;
-	private double startTime;
-	private double duration;
+	private String startTime;
+	private String duration;
 	private String weelsType;
 	
 	public String getWeelsType() {
@@ -19,16 +19,16 @@ public class Request {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public double getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(double startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
-	public double getDoubleDuration() {
+	public String getDoubleDuration() {
 		return duration;
 	}
-	public void setDoubleDuration(double duration) {
+	public void setDoubleDuration(String duration) {
 		this.duration = duration;
 	}
 	

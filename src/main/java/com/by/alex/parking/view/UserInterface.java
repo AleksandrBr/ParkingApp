@@ -51,8 +51,8 @@ public class UserInterface {
 					default: System.out.println("Hi take your choise: \n1. Search for place\n0. Exit");
 					break;
 				}
-				req.setStartTime(1600);
-				req.setDoubleDuration(100);
+				req.setStartTime("16:00");
+				req.setDoubleDuration("01:00");
 				try {
 					resp = command.execute(req);
 					if(resp.isErrorStatus()){

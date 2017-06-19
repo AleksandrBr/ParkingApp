@@ -6,7 +6,7 @@ import com.by.alex.parking.service.exception.ServiceException;
 public interface UserService {
 
 	
-	public ParkingPlace searchPlaceNow(String weelType, double startTime, double duration) throws ServiceException;
+	public ParkingPlace searchPlaceNow(String weelType, String startTime, String duration) throws ServiceException;
 	public double takeLeftPlaces();
 	public ParkingPlace takeWeelsBack(String placeID) throws ServiceException;
 }

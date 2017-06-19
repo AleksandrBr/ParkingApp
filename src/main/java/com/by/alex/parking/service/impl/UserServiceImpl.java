@@ -2,6 +2,7 @@ package com.by.alex.parking.service.impl;
 
 import java.util.List;
 
+import com.by.alex.parking.dao.factory.DAOFactory;
 import com.by.alex.parking.entity.AbstractWeels;
 import com.by.alex.parking.entity.place.ParkingPlace;
 import com.by.alex.parking.entity.place.PlaceHolder;
@@ -10,9 +11,9 @@ import com.by.alex.parking.entity.weels.Motocycle;
 import com.by.alex.parking.factory.FactoryWeels;
 import com.by.alex.parking.service.UserService;
 import com.by.alex.parking.service.exception.ServiceException;
+import com.by.alex.parking.utils.WorkWithDate;
 
 public class UserServiceImpl implements UserService {
-	private FactoryWeels weelsFactory = new FactoryWeels();
 	private AbstractWeels weelType;
 	private ParkingPlace parkingPlace;
 	private int parkingPlaceID;
@@ -21,9 +22,14 @@ public class UserServiceImpl implements UserService {
 	private int maxPlace = 10;
 
 	@Override
-	public ParkingPlace searchPlaceNow(String weelTypeName, double startTime, double duration)
+	public ParkingPlace searchPlaceNow(String weelTypeName, String startTime, String duration)
 			throws ServiceException {
-		takeParkingPlaceID();
+		String end_time = WorkWithDate.getEndTime(startTime, duration);
+		weelType = FactoryWeels.getWeels(weelTypeName, startTime, duration);
+		parkingPlace = new ParkingPlace(weelType, "Slot1");
+		DAOFactory.getInstance().getUserDAO().takePlaceInParking(parkingPlace, end_time);
+		return parkingPlace;
+		/*takeParkingPlaceID();
 		if (parkingPlaceID == maxPlace) {
 			if (motoList.size() % 2 == 1) {
 				weelType = weelsFactory.getWeels(weelTypeName, startTime, duration);
@@ -50,7 +56,9 @@ public class UserServiceImpl implements UserService {
 				PlaceHolder.getInstance().takeMotoPlace(parkingPlace);
 			}
 		}
-		return parkingPlace;
+		String end_time = WorkWithDate.getEndTime(startTime, duration);
+		DAOFactory.getInstance().getUserDAO().takePlaceInParking(parkingPlace, end_time);
+		return parkingPlace;*/
 	}
 
 	@Override

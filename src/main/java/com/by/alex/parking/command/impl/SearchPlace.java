@@ -13,8 +13,8 @@ public class SearchPlace implements Command {
 
 	String weelType;
 	int id;
-	double startTime;
-	double duration;
+	String startTime;
+	String duration;
 	Response resp;
 	ParkingPlace parkingPlace;
 
@@ -46,7 +46,7 @@ public class SearchPlace implements Command {
 
 		resp.setErrorStatus(false);
 		resp.setResultMessage("You can locate your " + weelType.toUpperCase() + " on place with ID:'"+ parkingPlace.getPlaceId() +"' .\nPls take it back after " +
-				duration/100 + " hours. \nYour Price is : " + (duration/100)*2 + "$ . Hope You Enjoyed Over Service\n");
+				duration + " hours. \nYour Price is : " + Integer.parseInt(duration.substring(0, 2))*2 + "$ . Hope You Enjoyed Over Service\n");
 		return resp;
 	}
 

@@ -8,7 +8,7 @@ import com.by.alex.parking.entity.weels.Motocycle;
 
 public class FactoryWeels {
 		
-	public AbstractWeels getWeels(String weelType,double startTime,double duration){
+	public static AbstractWeels getWeels(String weelType,String startTime,String duration){
 	//	int id = weelType.getId();
 	//	double startTime = weelType.getStartTime();
 	//	double duration = weelType.getDoubleDuration();	
