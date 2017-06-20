@@ -13,7 +13,7 @@ public class CheckPlacePresent implements Command {
 	@Override
 	public Response execute(Request req) throws CommandException {
 		res = new Response();
-		restOfPlace = ServiceFactory.getInstance().getUserService().takeLeftPlaces();
+		//restOfPlace = ServiceFactory.getInstance().getUserService().takeLeftPlaces();
 		res.setRestOfPlaces(restOfPlace);
 		res.setErrorStatus(false);
 		if(restOfPlace == 0.5)

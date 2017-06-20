@@ -32,12 +32,6 @@ public class UserDAO_Impl implements UserDAO{
 			prepare.setString(3, parkingPlace.getWeelType().getDuration());
 			prepare.setString(4, end_time);
 			prepare.setInt(5, parkingPlace.getWeelType().getId());
-			/*
-			 * 
-			 * 
-			 * 
-			 * 
-			 */
 			result = prepare.executeUpdate();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -47,22 +41,30 @@ public class UserDAO_Impl implements UserDAO{
 			e.printStackTrace();
 		}
 		finally{
-			try {
-				ConnectionPool.getInstance().returnConnection(con);
-				con.close();
-			} catch (SQLException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		ConnectionPool.getInstance().returnConnection(con);
 		}
 		return result;
 		
 	}
 
 	@Override
-	public void removeWeels() {
-		// TODO Auto-generated method stub
-		
+	public boolean removeWeels(String placeID, int weel_id) {
+		String deleteQuery = String.format("DELETE FROM parking_place_holder WHERE place_name = '%s' and weel_id='%s'", placeID, weel_id);
+		try {
+			con = ConnectionPool.getInstance().getConnection();
+			st = con.createStatement();
+			return st.executeUpdate(deleteQuery)!=0;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			ConnectionPool.getInstance().returnConnection(con);
+		}
+		return false;
 	}
 
 	@Override
@@ -87,6 +89,9 @@ public class UserDAO_Impl implements UserDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally{
+			ConnectionPool.getInstance().returnConnection(con);
+		}
 		return timeHolderList;
 	}
 
@@ -94,6 +99,27 @@ public class UserDAO_Impl implements UserDAO{
 	public void addTimeToParkinPlace() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String getPlaceInfoByID(int weelID) {
+		String placeIDList = null;
+		try {
+			con = ConnectionPool.getInstance().getConnection();
+			st = con.createStatement();
+			resultSet = st
+					.executeQuery(String.format("SELECT * FROM parking_place_holder where weel_id = '%s'", weelID));
+			resultSet.next();
+			placeIDList = resultSet.getString("place_name");
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return placeIDList;
 	}
 
 }

@@ -7,6 +7,6 @@ public interface UserService {
 
 	
 	public ParkingPlace searchPlaceNow(String weelType, String startTime, String duration) throws ServiceException;
-	public double takeLeftPlaces();
-	public ParkingPlace takeWeelsBack(String placeID) throws ServiceException;
+	public boolean takeLeftPlaces(String startTime, String endTime);
+	public ParkingPlace takeWeelsBack(int placeID) throws ServiceException;
 }

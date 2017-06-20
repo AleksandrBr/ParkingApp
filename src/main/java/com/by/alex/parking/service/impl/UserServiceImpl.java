@@ -2,6 +2,7 @@ package com.by.alex.parking.service.impl;
 
 import java.util.List;
 
+import com.by.alex.parking.dao.UserDAO;
 import com.by.alex.parking.dao.factory.DAOFactory;
 import com.by.alex.parking.entity.AbstractWeels;
 import com.by.alex.parking.entity.place.ParkingPlace;
@@ -11,6 +12,7 @@ import com.by.alex.parking.entity.weels.Motocycle;
 import com.by.alex.parking.factory.FactoryWeels;
 import com.by.alex.parking.service.UserService;
 import com.by.alex.parking.service.exception.ServiceException;
+import com.by.alex.parking.utils.TimeHolder;
 import com.by.alex.parking.utils.WorkWithDate;
 
 public class UserServiceImpl implements UserService {
@@ -24,11 +26,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ParkingPlace searchPlaceNow(String weelTypeName, String startTime, String duration)
 			throws ServiceException {
+		String endTime = WorkWithDate.getEndTime(startTime, duration);
+		if(takeLeftPlaces(startTime, endTime)){
 		String end_time = WorkWithDate.getEndTime(startTime, duration);
 		weelType = FactoryWeels.getWeels(weelTypeName, startTime, duration);
 		parkingPlace = new ParkingPlace(weelType, "Slot1");
 		DAOFactory.getInstance().getUserDAO().takePlaceInParking(parkingPlace, end_time);
-		return parkingPlace;
+		return parkingPlace;}
+		else{
+			throw new ServiceException(String.format("Sorry But At This Time: '%s - %s' we have no empty places", startTime, endTime));
+		}
 		/*takeParkingPlaceID();
 		if (parkingPlaceID == maxPlace) {
 			if (motoList.size() % 2 == 1) {
@@ -62,50 +69,34 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public double takeLeftPlaces() {
-		takeParkingPlaceID();
-		if (maxPlace == parkingPlaceID && motoList.size() % 2 == 1) {
-			return 0.5;
-		}
-		if (motoList.size() % 2 == 1) {
-			return (maxPlace - parkingPlaceID) + 0.5;
-		}
-		return maxPlace - parkingPlaceID;
+	public boolean takeLeftPlaces(String startTime, String endTime) {
+		List<TimeHolder> timeHolderList;
+		timeHolderList = DAOFactory.getInstance().getUserDAO().showFreeTime("Slot1");
+		WorkWithDate.isFreeTime(startTime, endTime, timeHolderList);
+		
+		return WorkWithDate.isFreeTime(startTime, endTime, timeHolderList);
+//		takeParkingPlaceID();
+//		if (maxPlace == parkingPlaceID && motoList.size() % 2 == 1) {
+//			return 0.5;
+//		}
+//		if (motoList.size() % 2 == 1) {
+//			return (maxPlace - parkingPlaceID) + 0.5;
+//		}
+//		return maxPlace - parkingPlaceID;
 	}
 
 	@Override
-	public ParkingPlace takeWeelsBack(String placeID) throws ServiceException {
-		takeParkingPlaceID();
-		if (placeID.contains("C")) {
-			for (ParkingPlace find : carList) {
-				if (find.getPlaceId().equals(placeID)) {
-					parkingPlace = find;
-					PlaceHolder.getInstance().goAwayCar(find);
-					break;
-				} else {
-					throw new ServiceException("THERE NO CAR ON PLACE WITH ID : '" + placeID + "'");
-				}
-			}
-		} else {
-			for (ParkingPlace find : motoList) {
-				if (find.getPlaceId().equals(placeID)) {
-					parkingPlace = find;
-					PlaceHolder.getInstance().goAwayMoto(find);
-					break;
-				} else {
-					throw new ServiceException("THERE NO MOTO ON PLACE WITH ID : '" + placeID + "'");
-				}
-
-			}
+	public ParkingPlace takeWeelsBack(int placeID) throws ServiceException {
+		takeParkingPlaceID(placeID);
+		if(DAOFactory.getInstance().getUserDAO().removeWeels("Slot1", placeID)){
+			System.out.println("Deleted success");
 		}
 		return parkingPlace;
 
 	}
 
-	private void takeParkingPlaceID() {
-		carList = PlaceHolder.getInstance().getCurrentPlaceInformation().get(0);
-		motoList = PlaceHolder.getInstance().getCurrentPlaceInformation().get(1);
-		parkingPlaceID = (carList.size() + ((motoList.size() / 2) + (motoList.size() % 2)));
+	private void takeParkingPlaceID(int placeID) {
+		DAOFactory.getInstance().getUserDAO().getPlaceInfoByID(placeID);
 	}
 
 }

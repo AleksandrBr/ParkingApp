@@ -10,7 +10,7 @@ import com.by.alex.parking.service.ServiceFactory;
 import com.by.alex.parking.service.exception.ServiceException;
 
 public class RemoveWeel implements Command{
-	private String placeID;
+	private int weelID;
 	private RemoveWeelRequest request;
 	private ParkingPlace parkingPlace;
 	private Response resp;
@@ -22,11 +22,11 @@ public class RemoveWeel implements Command{
 		} else {
 			throw new CommandException("Wrong request");
 		}
-		placeID = request.getPlaceID();
+		weelID = request.getPlaceID();
 		resp = new Response();
 		
 		try {
-			parkingPlace = ServiceFactory.getInstance().getUserService().takeWeelsBack(placeID);
+			parkingPlace = ServiceFactory.getInstance().getUserService().takeWeelsBack(weelID);
 			if(parkingPlace.getPlaceId() == null){
 				resp.setErrorStatus(true);
 				resp.setErrorMessage("INTERNAL-ERROR! Servise BROKEN. Pls contact with ADMIN");
@@ -34,7 +34,7 @@ public class RemoveWeel implements Command{
 			}
 			else{
 				resp.setErrorStatus(false);
-				resp.setResultMessage("ATTENTION!\nThe :' " +parkingPlace.getWeelType()+ "' leaving the place with ID: '" + placeID+"'\nThanks For Using Our Service\nGood Luck!\n");
+				resp.setResultMessage("ATTENTION!\nThe :' " +parkingPlace.getWeelType()+ "' leaving the place with ID: '" + weelID+"'\nThanks For Using Our Service\nGood Luck!\n");
 			}
 		} catch (ServiceException e) {
 			throw new CommandException(e.getMessage());

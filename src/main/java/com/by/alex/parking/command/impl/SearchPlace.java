@@ -35,7 +35,6 @@ public class SearchPlace implements Command {
 		try {
 			parkingPlace = ServiceFactory.getInstance().getUserService().searchPlaceNow(weelType, startTime, duration);			
 		} catch (ServiceException e) {
-
 			throw new CommandException(e.getMessage());
 		}
 		if(parkingPlace == null){
@@ -45,8 +44,8 @@ public class SearchPlace implements Command {
 		}
 
 		resp.setErrorStatus(false);
-		resp.setResultMessage("You can locate your " + weelType.toUpperCase() + " on place with ID:'"+ parkingPlace.getPlaceId() +"' .\nPls take it back after " +
-				duration + " hours. \nYour Price is : " + Integer.parseInt(duration.substring(0, 2))*2 + "$ . Hope You Enjoyed Over Service\n");
+		resp.setResultMessage("You can locate your " + weelType.toUpperCase() + " on place with ID:'"+ parkingPlace.getPlaceId() +". Your UnicNumber is: "+parkingPlace.getWeelType().getId()+"' .\nPls take it back after " +
+				duration + " hours. \nYour Price is : " + Integer.parseInt(duration.split(":")[0])*2 + "$ . Hope You Enjoyed Over Service\n");
 		return resp;
 	}
 

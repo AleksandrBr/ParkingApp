@@ -6,10 +6,10 @@ import org.testng.annotations.Test;
 
 public class WorkWithDateTest {
 
-	private static final String START_TIME_VALID = "13:00";
-	private static final String DURATION = "05:15";
+	private static final String START_TIME_VALID = "16:00";
+	private static final String DURATION = "01:00";
 	private static final String START_TIME_NEGATIV = "23:00";
-	private static final String EXCPECTED_END_TIME = "18:15";
+	private static final String EXCPECTED_END_TIME = "17:00";
 	
 	
 	@Test(description = "Check that times plusing correct")

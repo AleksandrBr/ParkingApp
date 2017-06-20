@@ -36,23 +36,34 @@ public class ConnectionPool {
 		return pool.take();
 	}
 
-	public void returnConnection(Connection connection) throws SQLException, InterruptedException {
+	public void returnConnection(Connection connection) {
 
 		if (connection == null) {
 			return;
 		}
 
-		connection.setAutoCommit(true);
-		connection.setReadOnly(false);
-
-		pool.put(connection);
+		try {
+			connection.setAutoCommit(true);
+			connection.setReadOnly(false);
+			pool.put(connection);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return;
 	}
 
-	public void closePool() throws SQLException {
+	public void closePool(){
 
 		for (Connection con : pool) {
-			con.close();
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		System.out.println("Connection Closed");
 	}

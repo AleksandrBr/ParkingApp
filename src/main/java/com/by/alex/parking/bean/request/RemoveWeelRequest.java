@@ -4,13 +4,13 @@ import com.by.alex.parking.bean.Request;
 
 public class RemoveWeelRequest extends Request {
 
-	private String placeID;
+	private int placeID;
 
-	public String getPlaceID() {
+	public int getPlaceID() {
 		return placeID;
 	}
 
-	public void setPlaceID(String placeID) {
+	public void setPlaceID(int placeID) {
 		this.placeID = placeID;
 	}
 

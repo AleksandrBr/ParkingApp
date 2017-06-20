@@ -8,14 +8,15 @@ import com.by.alex.parking.bean.request.RemoveWeelRequest;
 import com.by.alex.parking.bean.request.SearchPlaceNowRequest;
 import com.by.alex.parking.command.Command;
 import com.by.alex.parking.command.exeption.CommandException;
-import com.by.alex.parking.command.impl.CheckPlacePresent;
 import com.by.alex.parking.command.impl.RemoveWeel;
 import com.by.alex.parking.command.impl.SearchPlace;
+import com.by.alex.parking.dao.pool.ConnectionPool;
 
 public class UserInterface {
 
 	private boolean power = true;
 	private int choiseType;
+	private int un;
 	private String stringChoise;
 	private Scanner in = new Scanner(System.in);
 	private Request req;
@@ -29,19 +30,7 @@ public class UserInterface {
 			switch (choiseType) {
 
 			case 1:
-						//Check that place present :
-				command = new CheckPlacePresent();
 				req = new SearchPlaceNowRequest();
-				try {
-					resp = command.execute(req);
-					if(resp.getRestOfPlaces() <= 0.5){
-						if(resp.getRestOfPlaces()!=0.5){ System.out.println(resp.getResultMessage()); break;}
-						System.out.println(resp.getResultMessage());
-					}
-				} catch (CommandException e1) {
-					System.out.println(resp.getErrorMessage());
-					break;
-				}
 				command = new SearchPlace();
 				System.out.println("OK! Take Your Weel Type:\n1.Car\n2.Moto");
 				choiseType = in.nextInt();
@@ -67,9 +56,9 @@ public class UserInterface {
 				break;
 			case 2:
 				RemoveWeelRequest request = new RemoveWeelRequest();
-				System.out.println("OK! Pls Write your parking place here :");
-				stringChoise = in.next();
-				request.setPlaceID(stringChoise);
+				System.out.println("OK! Pls Write your UnicNuber place here :");
+				un = in.nextInt();
+				request.setPlaceID(un);
 				command = new RemoveWeel();
 				try {
 					resp = command.execute(request);
@@ -84,6 +73,8 @@ public class UserInterface {
 					break;
 				}
 			default:
+				ConnectionPool.getInstance().closePool();
+				in.close();
 				power = false;
 				break;
 			}
