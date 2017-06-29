@@ -43,8 +43,8 @@ public class WorkWithDate {
 
 			@Override
 			public int compare(String o1, String o2) {
-				int start = Integer.parseInt(o1.substring(0, 1));
-				int end = Integer.parseInt(o2.substring(0, 1));
+				int start = Integer.parseInt(o1.substring(0, 2));
+				int end = Integer.parseInt(o2.substring(0, 2));
 				return start - end;
 			}
 		});
