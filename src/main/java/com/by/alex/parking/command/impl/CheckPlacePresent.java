@@ -4,7 +4,6 @@ import com.by.alex.parking.bean.Request;
 import com.by.alex.parking.bean.Response;
 import com.by.alex.parking.command.Command;
 import com.by.alex.parking.command.exeption.CommandException;
-import com.by.alex.parking.service.ServiceFactory;
 
 public class CheckPlacePresent implements Command {
 	private Response res;

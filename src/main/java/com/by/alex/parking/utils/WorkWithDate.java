@@ -2,6 +2,7 @@ package com.by.alex.parking.utils;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 public class WorkWithDate {
@@ -35,6 +36,19 @@ public class WorkWithDate {
 			}
 		}
 		return true;
+	}
+	
+	public static List<String> sortTime(List<String> startTimeInSlotList) {
+		startTimeInSlotList.sort(new Comparator<String>() {
+
+			@Override
+			public int compare(String o1, String o2) {
+				int start = Integer.parseInt(o1.substring(0, 1));
+				int end = Integer.parseInt(o2.substring(0, 1));
+				return start - end;
+			}
+		});
+		return startTimeInSlotList;
 	}
 
 }

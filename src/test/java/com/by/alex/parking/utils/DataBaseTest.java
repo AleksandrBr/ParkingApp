@@ -4,14 +4,14 @@ import static org.testng.Assert.*;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.by.alex.parking.dao.UserDAO;
 import com.by.alex.parking.dao.factory.DAOFactory;
+import com.by.alex.parking.dao.pool.ConnectionPool;
 import com.by.alex.parking.entity.place.ParkingPlace;
 import com.by.alex.parking.factory.FactoryWeels;
 
@@ -28,6 +28,7 @@ public class DataBaseTest {
 	
 	@AfterClass(alwaysRun = true)
 	public void teerDown(){
+		ConnectionPool.getInstance().closePool();
 		pPlace = null;
 		userDAO = null;
 	}
@@ -50,5 +51,11 @@ public class DataBaseTest {
 	@Test(dependsOnMethods = "test2")
 	public void test_DeleteWeelsFromParking(){
 		assertTrue(userDAO.removeWeels(pPlace.getPlaceId(), pPlace.getWeelType().getId()), "Verify Deletion");
+	}
+	
+	// Run only with clean DB
+	//@Test(groups = "Smoke") 
+	public void snokeTest(){
+		Assert.assertTrue(userDAO.getSchedule().isEmpty());
 	}
 }

@@ -12,4 +12,5 @@ public interface UserDAO {
 	public List<TimeHolder> showFreeTime(String placeID);
 	public void addTimeToParkinPlace();
 	public String getPlaceInfoByID(int weelID);
+	public List<String> getSchedule();
 }
