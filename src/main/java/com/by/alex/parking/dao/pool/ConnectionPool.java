@@ -7,69 +7,69 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class ConnectionPool {
-	private final static String DB_NAME = "jdbc:mysql://localhost:3306/parkingappdb?useSSL=false";
-	private final static String USER_NAME = "root";
-	private final static String PASS = "root";
-	private static final ConnectionPool instance = new ConnectionPool();
-	private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(5);
+    private final static String DB_NAME = "jdbc:mysql://localhost:3306/parkingappdb?useSSL=false";
+    private final static String USER_NAME = "root";
+    private final static String PASS = "root";
+    private static final ConnectionPool instance = new ConnectionPool();
+    private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(5);
 
-	private ConnectionPool() {
+    private ConnectionPool() {
 
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Driver Connected");
-			for (int index = 0; index < pool.remainingCapacity(); index++) {
-				pool.add(DriverManager.getConnection(DB_NAME, USER_NAME, PASS));
-			}
-			System.out.println("Connection Installed");
+	try {
+	    Class.forName("com.mysql.jdbc.Driver");
+	    System.out.println("Driver Connected");
+	    for (int index = 0; index < pool.remainingCapacity(); index++) {
+		pool.add(DriverManager.getConnection(DB_NAME, USER_NAME, PASS));
+	    }
+	    System.out.println("Connection Installed");
 
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	} catch (ClassNotFoundException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (SQLException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+    }
+
+    public Connection getConnection() throws InterruptedException {
+	return pool.take();
+    }
+
+    public void returnConnection(Connection connection) {
+
+	if (connection == null) {
+	    return;
 	}
 
-	public Connection getConnection() throws InterruptedException {
-		return pool.take();
+	try {
+	    connection.setAutoCommit(true);
+	    connection.setReadOnly(false);
+	    pool.put(connection);
+	} catch (SQLException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (InterruptedException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	}
+	return;
+    }
 
-	public void returnConnection(Connection connection) {
+    public void closePool() {
 
-		if (connection == null) {
-			return;
-		}
-
-		try {
-			connection.setAutoCommit(true);
-			connection.setReadOnly(false);
-			pool.put(connection);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return;
+	for (Connection con : pool) {
+	    try {
+		con.close();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
+	System.out.println("Connection Closed");
+    }
 
-	public void closePool(){
-
-		for (Connection con : pool) {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println("Connection Closed");
-	}
-
-	public static ConnectionPool getInstance() {
-		return instance;
-	}
+    public static ConnectionPool getInstance() {
+	return instance;
+    }
 
 }

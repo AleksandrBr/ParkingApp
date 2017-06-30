@@ -5,9 +5,11 @@ import com.by.alex.parking.service.exception.ServiceException;
 
 public interface UserService {
 
-	
-	public ParkingPlace searchPlaceNow(String weelType, String startTime, String duration) throws ServiceException;
-	public boolean takeLeftPlaces(String startTime, String endTime);
-	public ParkingPlace takeWeelsBack(int placeID) throws ServiceException;
-	public String getSchedule() throws ServiceException;
+    public ParkingPlace searchPlaceNow(String weelType, String startTime, String duration) throws ServiceException;
+
+    public boolean takeLeftPlaces(String startTime, String endTime) throws ServiceException;
+
+    public ParkingPlace takeWeelsBack(int placeID) throws ServiceException;
+
+    public String getSchedule() throws ServiceException;
 }

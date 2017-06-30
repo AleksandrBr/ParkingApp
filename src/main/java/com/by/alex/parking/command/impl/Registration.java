@@ -5,20 +5,12 @@ import com.by.alex.parking.bean.Response;
 import com.by.alex.parking.command.Command;
 import com.by.alex.parking.command.exeption.CommandException;
 
-public class Registration implements Command{
+public class Registration implements Command {
 
-	@Override
-	public Response execute(Request req) throws CommandException {
+    @Override
+    public Response execute(Request req) throws CommandException {
 
-
-		
-		
-		
-		
-		
-		
-		return null;
-	}
-	
+	return null;
+    }
 
 }
