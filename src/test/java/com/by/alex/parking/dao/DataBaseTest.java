@@ -1,4 +1,4 @@
-package com.by.alex.parking.utils;
+package com.by.alex.parking.dao;
 
 import static org.testng.Assert.*;
 
@@ -15,6 +15,8 @@ import com.by.alex.parking.dao.factory.DAOFactory;
 import com.by.alex.parking.dao.pool.ConnectionPool;
 import com.by.alex.parking.entity.place.ParkingPlace;
 import com.by.alex.parking.factory.FactoryWeels;
+import com.by.alex.parking.utils.TimeHolder;
+import com.by.alex.parking.utils.WorkWithDate;
 
 public class DataBaseTest {
 
